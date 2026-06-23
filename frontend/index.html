@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gouvernance & Conformité - Agents IA</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glow-container">
+        <div class="glow-orb orb-primary"></div>
+        <div class="glow-orb orb-secondary"></div>
+    </div>
+
+    <header class="app-header">
+        <div class="header-logo">
+            <span class="logo-icon">🧪</span>
+            <div class="logo-text">
+                <h1>Gouvernance Agentique</h1>
+                <p>Validation Continue & Conformité des Agents IA</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button id="run-tests-btn" class="btn btn-primary btn-glow">
+                <span class="btn-icon">⚡</span> Lancer la suite de tests
+            </button>
+            <div class="system-status">
+                <span class="status-dot healthy"></span> Health: <span id="health-status">Checking...</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-content">
+        <!-- TOP METRICS BAR -->
+        <section class="metrics-grid">
+            <div class="metric-card glass">
+                <div class="metric-info">
+                    <h3>Score de Conformité Global</h3>
+                    <div class="metric-value" id="val-global-score">--%</div>
+                    <p class="metric-sub text-success" id="val-success-rate">Taux de réussite: --%</p>
+                </div>
+                <div class="metric-visual score-radial">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" id="radial-progress" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                </div>
+            </div>
+            <div class="metric-card glass">
+                <div class="metric-info">
+                    <h3>Exécutions Réussies / Échouées</h3>
+                    <div class="metric-value">
+                        <span class="text-success" id="val-passed-tests">--</span>
+                        <span class="divider">/</span>
+                        <span class="text-error" id="val-failed-tests">--</span>
+                    </div>
+                    <p class="metric-sub">Total: <span id="val-total-tests">--</span> cas testés</p>
+                </div>
+                <div class="metric-icon success-bg">✓</div>
+            </div>
+            <div class="metric-card glass">
+                <div class="metric-info">
+                    <h3>Temps Moyen de Réponse</h3>
+                    <div class="metric-value" id="val-avg-latency">-- ms</div>
+                    <p class="metric-sub text-cyan">Performance nominale de l'infra</p>
+                </div>
+                <div class="metric-icon latency-bg">⏳</div>
+            </div>
+        </section>
+
+        <!-- TABS NAVIGATION -->
+        <nav class="tabs-nav glass">
+            <button class="tab-link active" data-tab="tab-monitoring">📊 Suivi Opérationnel</button>
+            <button class="tab-link" data-tab="tab-performance">🧠 AI Performance</button>
+            <button class="tab-link" data-tab="tab-governance">⚖️ Gouvernance & Conformité</button>
+            <button class="tab-link" data-tab="tab-playground">💬 Playground Agent</button>
+        </nav>
+
+        <!-- TAB PANELS -->
+        <section class="tab-panels">
+            <!-- TAB 1: MONITORING -->
+            <div class="tab-panel active" id="tab-monitoring">
+                <div class="panel-grid">
+                    <div class="card glass span-2">
+                        <div class="card-header">
+                            <h2>Exécutions des Tests par Catégorie</h2>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <div class="card-header">
+                            <h2>Statut des Mocks CI/CD</h2>
+                        </div>
+                        <div class="card-body">
+                            <ul class="mock-list">
+                                <li>
+                                    <span class="mock-name">API Wikipedia (Standard)</span>
+                                    <span class="badge badge-success">Mocké (Auto)</span>
+                                </li>
+                                <li>
+                                    <span class="mock-name">Boîte de Quarantaine (DLQ)</span>
+                                    <span class="badge badge-success">Mocké (200 OK)</span>
+                                </li>
+                                <li>
+                                    <span class="mock-name">CitizenAgent Simulator</span>
+                                    <span class="badge badge-indigo">Actif</span>
+                                </li>
+                                <li>
+                                    <span class="mock-name">Validation Rules Engine</span>
+                                    <span class="badge badge-indigo">Actif</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: PERFORMANCE -->
+            <div class="tab-panel" id="tab-performance">
+                <div class="panel-grid">
+                    <div class="card glass">
+                        <div class="card-header">
+                            <h2>Consommation de Tokens</h2>
+                        </div>
+                        <div class="card-body chart-container-small">
+                            <canvas id="tokenChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <div class="card-header">
+                            <h2>Distribution de Confiance</h2>
+                        </div>
+                        <div class="card-body chart-container-small">
+                            <canvas id="confidenceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: GOVERNANCE -->
+            <div class="tab-panel" id="tab-governance">
+                <div class="card glass">
+                    <div class="card-header header-with-filter">
+                        <h2>Journal d'Exécution & Vérification de Conformité</h2>
+                        <div class="filter-actions">
+                            <select id="category-filter" class="form-select">
+                                <option value="all">Toutes les catégories</option>
+                                <option value="demande administrative">Demande administrative</option>
+                                <option value="réclamation">Réclamation</option>
+                                <option value="question sensible">Question sensible</option>
+                                <option value="erreur volontaire">Erreur volontaire</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Catégorie</th>
+                                    <th>Input Citoyen</th>
+                                    <th>Intention Détectée</th>
+                                    <th>Score de Conformité</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="report-table-body">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: PLAYGROUND -->
+            <div class="tab-panel" id="tab-playground">
+                <div class="panel-grid">
+                    <div class="card glass">
+                        <div class="card-header">
+                            <h2>Tester l'Agent en Direct</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="playground-form">
+                                <div class="form-group">
+                                    <label for="playground-input">Message du Citoyen :</label>
+                                    <textarea id="playground-input" rows="4" placeholder="Ex: Je veux un acte de naissance..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <span>💬</span> Envoyer à l'Agent
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card glass">
+                        <div class="card-header">
+                            <h2>Analyse Sémantique & Réponse</h2>
+                        </div>
+                        <div class="card-body" id="playground-result-container">
+                            <div class="placeholder-text">Saisissez un message et lancez l'agent pour voir l'analyse en temps réel.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- DETAIL MODAL -->
+    <div id="detail-modal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3 id="modal-title">Détails de Validation</h3>
+                <span class="close-btn" id="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="detail-section">
+                    <h4>Requête :</h4>
+                    <p class="code-block" id="modal-input"></p>
+                </div>
+                <div class="detail-section">
+                    <h4>Réponse générée par l'agent :</h4>
+                    <p class="code-block" id="modal-response"></p>
+                </div>
+                <div class="detail-section">
+                    <h4>Règles de validation & Verdict :</h4>
+                    <ul class="detail-list" id="modal-details-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

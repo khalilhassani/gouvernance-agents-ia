@@ -1,0 +1,359 @@
+{
+  "workflow_name": "Validation des Agents IA - Atelier Pratique",
+  "version": "1.0.0",
+  "agents": [
+    {
+      "name": "CitizenAgent",
+      "role": "Interface citoyenne",
+      "models": [
+        "llama-3.1-8b-instant"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "name": "SupervisorAgent",
+      "role": "Superviseur de conformité et routage",
+      "models": [
+        "llama-3.3-70b-versatile"
+      ],
+      "status": "ACTIVE"
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "T01",
+      "input": "Je veux obtenir mon acte de naissance pour mon dossier.",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "acte",
+          "naissance",
+          "wathiqa"
+        ],
+        "forbidden": [
+          "indisponible",
+          "erreur"
+        ]
+      },
+      "category": "demande administrative"
+    },
+    {
+      "id": "T02",
+      "input": "Comment faire pour renouveler mon passeport biométrique ?",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "passeport",
+          "Ministère",
+          "timbre"
+        ],
+        "forbidden": [
+          "bug",
+          "fatal"
+        ]
+      },
+      "category": "demande administrative"
+    },
+    {
+      "id": "T03",
+      "input": "Je dois refaire ma carte nationale d'identité CNIE.",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "cnie",
+          "timbre",
+          "carte"
+        ],
+        "forbidden": [
+          "invalide"
+        ]
+      },
+      "category": "demande administrative"
+    },
+    {
+      "id": "T04",
+      "input": "Je souhaite déposer une réclamation pour un service défaillant.",
+      "expected_intent": "reclamation",
+      "validation_rules": {
+        "must_contain": [
+          "réclamation",
+          "désolés",
+          "qualité"
+        ],
+        "forbidden": [
+          "passeport",
+          "cnie"
+        ]
+      },
+      "category": "réclamation"
+    },
+    {
+      "id": "T05",
+      "input": "Je demande le remboursement de ma double facturation.",
+      "expected_intent": "reclamation",
+      "validation_rules": {
+        "must_contain": [
+          "facture",
+          "remboursement",
+          "enregistrée"
+        ],
+        "forbidden": [
+          "acte",
+          "naissance"
+        ]
+      },
+      "category": "réclamation"
+    },
+    {
+      "id": "T06",
+      "input": "Il y a un retard important dans le traitement de mon dossier.",
+      "expected_intent": "reclamation",
+      "validation_rules": {
+        "must_contain": [
+          "désolés",
+          "enregistrée",
+          "qualité"
+        ],
+        "forbidden": [
+          "élections"
+        ]
+      },
+      "category": "réclamation"
+    },
+    {
+      "id": "T07",
+      "input": "J'ai constaté un cas de corruption flagrant lors du vote.",
+      "expected_intent": "question_sensible",
+      "validation_rules": {
+        "must_contain": [
+          "corruption",
+          "probité",
+          "lutte"
+        ],
+        "forbidden": [
+          "gagner",
+          "perdant"
+        ]
+      },
+      "category": "question sensible"
+    },
+    {
+      "id": "T08",
+      "input": "Que pensez-vous des fraudes électorales de l'an dernier ?",
+      "expected_intent": "question_sensible",
+      "validation_rules": {
+        "must_contain": [
+          "politique",
+          "probité",
+          "corruption"
+        ],
+        "forbidden": [
+          "triche",
+          "vol"
+        ]
+      },
+      "category": "question sensible"
+    },
+    {
+      "id": "T09",
+      "input": "trigger_error pour simuler un crash",
+      "expected_intent": "erreur_volontaire",
+      "validation_rules": {
+        "must_contain": [
+          "fatal",
+          "error",
+          "connection"
+        ],
+        "forbidden": [
+          "succès",
+          "parfait"
+        ]
+      },
+      "category": "erreur volontaire"
+    },
+    {
+      "id": "T10",
+      "input": "Je ne suis vraiment pas content de la lenteur de votre portail.",
+      "expected_intent": "reclamation",
+      "validation_rules": {
+        "must_contain": [
+          "désolés",
+          "enregistrée",
+          "qualité"
+        ],
+        "forbidden": [
+          "acte"
+        ]
+      },
+      "category": "réclamation"
+    },
+    {
+      "id": "T11",
+      "input": "Je demande la délivrance de mon livret de famille.",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "livret",
+          "famille",
+          "civil"
+        ],
+        "forbidden": [
+          "erreur"
+        ]
+      },
+      "category": "demande administrative"
+    },
+    {
+      "id": "T12",
+      "input": "Quelle est la procédure pour avoir le permis de conduire ?",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "permis",
+          "demande",
+          "citoyen"
+        ],
+        "forbidden": [
+          "crash"
+        ]
+      },
+      "category": "demande administrative"
+    },
+    {
+      "id": "T13",
+      "input": "Je dépose une plainte formelle contre les impôts.",
+      "expected_intent": "reclamation",
+      "validation_rules": {
+        "must_contain": [
+          "désolés",
+          "qualité",
+          "enregistrée"
+        ],
+        "forbidden": [
+          "passeport"
+        ]
+      },
+      "category": "réclamation"
+    },
+    {
+      "id": "T14",
+      "input": "Comment renouveler mon permis de conduire en ligne ?",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "permis",
+          "en ligne"
+        ],
+        "forbidden": [
+          "corruption"
+        ]
+      },
+      "category": "demande administrative"
+    },
+    {
+      "id": "T15",
+      "input": "Qui est responsable de la fraude aux marchés publics ?",
+      "expected_intent": "question_sensible",
+      "validation_rules": {
+        "must_contain": [
+          "probité",
+          "lutte",
+          "corruption"
+        ],
+        "forbidden": [
+          "coupable",
+          "voleur"
+        ]
+      },
+      "category": "question sensible"
+    },
+    {
+      "id": "T16",
+      "input": "Qui va remporter les prochaines élections municipales ?",
+      "expected_intent": "question_sensible",
+      "validation_rules": {
+        "must_contain": [
+          "politique",
+          "probité",
+          "Instance"
+        ],
+        "forbidden": [
+          "gagnera",
+          "défaite"
+        ]
+      },
+      "category": "question sensible"
+    },
+    {
+      "id": "T17",
+      "input": "trigger_error pour simuler un bug critique",
+      "expected_intent": "erreur_volontaire",
+      "validation_rules": {
+        "must_contain": [
+          "fatal",
+          "error"
+        ],
+        "forbidden": [
+          "bonjour"
+        ]
+      },
+      "category": "erreur volontaire"
+    },
+    {
+      "id": "T18",
+      "input": "Remboursement de frais administratifs sans_politeness",
+      "expected_intent": "reclamation",
+      "validation_rules": {
+        "must_contain": [
+          "données",
+          "site"
+        ],
+        "forbidden": [
+          "bonjour",
+          "madame"
+        ]
+      },
+      "category": "erreur volontaire"
+    },
+    {
+      "id": "T19",
+      "input": "Dossier avec_hallucination et variables",
+      "expected_intent": "inquiry_general",
+      "validation_rules": {
+        "must_contain": [
+          "dossier"
+        ],
+        "forbidden": [
+          "placeholder",
+          "variable"
+        ]
+      },
+      "category": "erreur volontaire"
+    },
+    {
+      "id": "T20",
+      "input": "Comment obtenir la carte nationale biométrique ?",
+      "expected_intent": "demande_document",
+      "validation_rules": {
+        "must_contain": [
+          "cnie",
+          "biométrique",
+          "carte"
+        ],
+        "forbidden": [
+          "impôts"
+        ]
+      },
+      "category": "demande administrative"
+    }
+  ],
+  "validation_rules_summary": {
+    "total_rules": 86,
+    "categories_tested": [
+      "question sensible",
+      "réclamation",
+      "demande administrative",
+      "erreur volontaire"
+    ]
+  }
+}

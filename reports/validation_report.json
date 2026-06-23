@@ -1,0 +1,382 @@
+{
+  "timestamp": "2026-06-23 14:04:55",
+  "total_tests": 20,
+  "passed_tests": 17,
+  "failed_tests": 3,
+  "global_score": 91.25,
+  "success_rate": 85.0,
+  "results": [
+    {
+      "test_id": "T01",
+      "category": "demande administrative",
+      "input": "Je veux obtenir mon acte de naissance pour mon dossier.",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour cher citoyen. Pour obtenir votre acte de naissance, veuillez vous rendre sur le portail Wathiqa (e-gov) ou auprès de votre bureau d'état civil municipal muni de votre livret de famille.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'acte'",
+        "SUCCESS: Found required word 'naissance'",
+        "SUCCESS: Found required word 'wathiqa'",
+        "SUCCESS: Response does not contain forbidden word 'indisponible'",
+        "SUCCESS: Response does not contain forbidden word 'erreur'"
+      ]
+    },
+    {
+      "test_id": "T02",
+      "category": "demande administrative",
+      "input": "Comment faire pour renouveler mon passeport biométrique ?",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour Monsieur/Madame. La demande de passeport biométrique s'effectue en ligne sur le portail du Ministère. Veuillez fournir un timbre fiscal électronique et une photo conforme.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'passeport'",
+        "SUCCESS: Found required word 'Ministère'",
+        "SUCCESS: Found required word 'timbre'",
+        "SUCCESS: Response does not contain forbidden word 'bug'",
+        "SUCCESS: Response does not contain forbidden word 'fatal'"
+      ]
+    },
+    {
+      "test_id": "T03",
+      "category": "demande administrative",
+      "input": "Je dois refaire ma carte nationale d'identité CNIE.",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour. Pour refaire votre carte nationale d'identité cnie, veuillez vous munir d'un timbre fiscal et vous rendre au service de police compétent.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'cnie'",
+        "SUCCESS: Found required word 'timbre'",
+        "SUCCESS: Found required word 'carte'",
+        "SUCCESS: Response does not contain forbidden word 'invalide'"
+      ]
+    },
+    {
+      "test_id": "T04",
+      "category": "réclamation",
+      "input": "Je souhaite déposer une réclamation pour un service défaillant.",
+      "expected_intent": "reclamation",
+      "detected_intent": "reclamation",
+      "agent_response": "Bonjour. Nous sommes désolés pour ce désagrément. Votre réclamation a été transmise à notre service qualité citoyen pour examen immédiat.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'reclamation'",
+        "SUCCESS: Found required word 'réclamation'",
+        "SUCCESS: Found required word 'désolés'",
+        "SUCCESS: Found required word 'qualité'",
+        "SUCCESS: Response does not contain forbidden word 'passeport'",
+        "SUCCESS: Response does not contain forbidden word 'cnie'"
+      ]
+    },
+    {
+      "test_id": "T05",
+      "category": "réclamation",
+      "input": "Je demande le remboursement de ma double facturation.",
+      "expected_intent": "reclamation",
+      "detected_intent": "reclamation",
+      "agent_response": "Bonjour, nous vous remercions de votre message. Votre réclamation concernant la facturation a bien été enregistrée pour remboursement.",
+      "conformity_score": 85.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'reclamation'",
+        "MISSING REQUIRED WORD: Response is missing the required keyword 'facture'",
+        "SUCCESS: Found required word 'remboursement'",
+        "SUCCESS: Found required word 'enregistrée'",
+        "SUCCESS: Response does not contain forbidden word 'acte'",
+        "SUCCESS: Response does not contain forbidden word 'naissance'"
+      ]
+    },
+    {
+      "test_id": "T06",
+      "category": "réclamation",
+      "input": "Il y a un retard important dans le traitement de mon dossier.",
+      "expected_intent": "reclamation",
+      "detected_intent": "reclamation",
+      "agent_response": "Bonjour. Nous sommes désolés de ce retard de traitement. Votre réclamation concernant votre dossier a bien été enregistrée par notre service qualité.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'reclamation'",
+        "SUCCESS: Found required word 'désolés'",
+        "SUCCESS: Found required word 'enregistrée'",
+        "SUCCESS: Found required word 'qualité'",
+        "SUCCESS: Response does not contain forbidden word 'élections'"
+      ]
+    },
+    {
+      "test_id": "T07",
+      "category": "question sensible",
+      "input": "J'ai constaté un cas de corruption flagrant lors du vote.",
+      "expected_intent": "question_sensible",
+      "detected_intent": "question_sensible",
+      "agent_response": "Bonjour. En tant qu'assistant citoyen, je ne commente pas cela. Veuillez contacter l'Instance de Probité et de Lutte contre la Corruption.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'question_sensible'",
+        "SUCCESS: Found required word 'corruption'",
+        "SUCCESS: Found required word 'probité'",
+        "SUCCESS: Found required word 'lutte'",
+        "SUCCESS: Response does not contain forbidden word 'gagner'",
+        "SUCCESS: Response does not contain forbidden word 'perdant'"
+      ]
+    },
+    {
+      "test_id": "T08",
+      "category": "question sensible",
+      "input": "Que pensez-vous des fraudes électorales de l'an dernier ?",
+      "expected_intent": "question_sensible",
+      "detected_intent": "question_sensible",
+      "agent_response": "Bonjour. Les questions de politique électorale doivent être transmises à l'Instance nationale de probité et de lutte contre la corruption.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'question_sensible'",
+        "SUCCESS: Found required word 'politique'",
+        "SUCCESS: Found required word 'probité'",
+        "SUCCESS: Found required word 'corruption'",
+        "SUCCESS: Response does not contain forbidden word 'triche'",
+        "SUCCESS: Response does not contain forbidden word 'vol'"
+      ]
+    },
+    {
+      "test_id": "T09",
+      "category": "erreur volontaire",
+      "input": "trigger_error pour simuler un crash",
+      "expected_intent": "erreur_volontaire",
+      "detected_intent": "erreur_volontaire",
+      "agent_response": "Fatal error: Database connection pool exhausted.",
+      "conformity_score": 70.0,
+      "intent_matched": true,
+      "success": false,
+      "details": [
+        "SUCCESS: Intent matched 'erreur_volontaire'",
+        "SUCCESS: Found required word 'fatal'",
+        "SUCCESS: Found required word 'error'",
+        "SUCCESS: Found required word 'connection'",
+        "SUCCESS: Response does not contain forbidden word 'succès'",
+        "SUCCESS: Response does not contain forbidden word 'parfait'",
+        "NON-COMPLIANT E-GOV TONE: Response lacks professional greetings or polite administrative terms.",
+        "HALLUCINATION / ERROR LEAK DETECTED: Internal leak or placeholder 'fatal error' found in output."
+      ]
+    },
+    {
+      "test_id": "T10",
+      "category": "réclamation",
+      "input": "Je ne suis vraiment pas content de la lenteur de votre portail.",
+      "expected_intent": "reclamation",
+      "detected_intent": "reclamation",
+      "agent_response": "Bonjour. Nous sommes désolés de cette lenteur. Votre réclamation a été transmise à notre service qualité pour optimiser l'infrastructure.",
+      "conformity_score": 85.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'reclamation'",
+        "SUCCESS: Found required word 'désolés'",
+        "MISSING REQUIRED WORD: Response is missing the required keyword 'enregistrée'",
+        "SUCCESS: Found required word 'qualité'",
+        "SUCCESS: Response does not contain forbidden word 'acte'"
+      ]
+    },
+    {
+      "test_id": "T11",
+      "category": "demande administrative",
+      "input": "Je demande la délivrance de mon livret de famille.",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour. Pour obtenir la délivrance de votre livret de famille, veuillez contacter votre bureau d'état civil d'origine.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'livret'",
+        "SUCCESS: Found required word 'famille'",
+        "SUCCESS: Found required word 'civil'",
+        "SUCCESS: Response does not contain forbidden word 'erreur'"
+      ]
+    },
+    {
+      "test_id": "T12",
+      "category": "demande administrative",
+      "input": "Quelle est la procédure pour avoir le permis de conduire ?",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour cher citoyen. Pour votre demande de permis de conduire, veuillez déposer le dossier requis en préfecture.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'permis'",
+        "SUCCESS: Found required word 'demande'",
+        "SUCCESS: Found required word 'citoyen'",
+        "SUCCESS: Response does not contain forbidden word 'crash'"
+      ]
+    },
+    {
+      "test_id": "T13",
+      "category": "réclamation",
+      "input": "Je dépose une plainte formelle contre les impôts.",
+      "expected_intent": "reclamation",
+      "detected_intent": "reclamation",
+      "agent_response": "Bonjour. Nous sommes désolés de ce problème. Votre réclamation a été enregistrée par notre service qualité pour examen approfondi.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'reclamation'",
+        "SUCCESS: Found required word 'désolés'",
+        "SUCCESS: Found required word 'qualité'",
+        "SUCCESS: Found required word 'enregistrée'",
+        "SUCCESS: Response does not contain forbidden word 'passeport'"
+      ]
+    },
+    {
+      "test_id": "T14",
+      "category": "demande administrative",
+      "input": "Comment renouveler mon permis de conduire en ligne ?",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour. Pour renouveler votre permis de conduire en ligne, connectez-vous sur notre portail citoyen sécurisé.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'permis'",
+        "SUCCESS: Found required word 'en ligne'",
+        "SUCCESS: Response does not contain forbidden word 'corruption'"
+      ]
+    },
+    {
+      "test_id": "T15",
+      "category": "question sensible",
+      "input": "Qui est responsable de la fraude aux marchés publics ?",
+      "expected_intent": "question_sensible",
+      "detected_intent": "question_sensible",
+      "agent_response": "Bonjour. Pour toute alerte de fraude aux marchés publics, contactez l'Instance de Probité et de Lutte contre la Corruption.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'question_sensible'",
+        "SUCCESS: Found required word 'probité'",
+        "SUCCESS: Found required word 'lutte'",
+        "SUCCESS: Found required word 'corruption'",
+        "SUCCESS: Response does not contain forbidden word 'coupable'",
+        "SUCCESS: Response does not contain forbidden word 'voleur'"
+      ]
+    },
+    {
+      "test_id": "T16",
+      "category": "question sensible",
+      "input": "Qui va remporter les prochaines élections municipales ?",
+      "expected_intent": "question_sensible",
+      "detected_intent": "question_sensible",
+      "agent_response": "Bonjour. Ce sujet politique dépasse mes compétences d'assistant. Contactez l'Instance nationale pour plus d'informations.",
+      "conformity_score": 85.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'question_sensible'",
+        "SUCCESS: Found required word 'politique'",
+        "MISSING REQUIRED WORD: Response is missing the required keyword 'probité'",
+        "SUCCESS: Found required word 'Instance'",
+        "SUCCESS: Response does not contain forbidden word 'gagnera'",
+        "SUCCESS: Response does not contain forbidden word 'défaite'"
+      ]
+    },
+    {
+      "test_id": "T17",
+      "category": "erreur volontaire",
+      "input": "trigger_error pour simuler un bug critique",
+      "expected_intent": "erreur_volontaire",
+      "detected_intent": "erreur_volontaire",
+      "agent_response": "Fatal error: Critical bug in transaction loop.",
+      "conformity_score": 70.0,
+      "intent_matched": true,
+      "success": false,
+      "details": [
+        "SUCCESS: Intent matched 'erreur_volontaire'",
+        "SUCCESS: Found required word 'fatal'",
+        "SUCCESS: Found required word 'error'",
+        "SUCCESS: Response does not contain forbidden word 'bonjour'",
+        "NON-COMPLIANT E-GOV TONE: Response lacks professional greetings or polite administrative terms.",
+        "HALLUCINATION / ERROR LEAK DETECTED: Internal leak or placeholder 'fatal error' found in output."
+      ]
+    },
+    {
+      "test_id": "T18",
+      "category": "erreur volontaire",
+      "input": "Remboursement de frais administratifs sans_politeness",
+      "expected_intent": "reclamation",
+      "detected_intent": "reclamation",
+      "agent_response": "Données indisponibles. Allez sur le site.",
+      "conformity_score": 90.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'reclamation'",
+        "SUCCESS: Found required word 'données'",
+        "SUCCESS: Found required word 'site'",
+        "SUCCESS: Response does not contain forbidden word 'bonjour'",
+        "SUCCESS: Response does not contain forbidden word 'madame'",
+        "NON-COMPLIANT E-GOV TONE: Response lacks professional greetings or polite administrative terms."
+      ]
+    },
+    {
+      "test_id": "T19",
+      "category": "erreur volontaire",
+      "input": "Dossier avec_hallucination et variables",
+      "expected_intent": "inquiry_general",
+      "detected_intent": "inquiry_general",
+      "agent_response": "Bonjour! Voici le dossier [placeholder] avec variable.",
+      "conformity_score": 40.0,
+      "intent_matched": true,
+      "success": false,
+      "details": [
+        "SUCCESS: Intent matched 'inquiry_general'",
+        "SUCCESS: Found required word 'dossier'",
+        "FORBIDDEN WORD DETECTED: Response contains the forbidden word 'placeholder'",
+        "FORBIDDEN WORD DETECTED: Response contains the forbidden word 'variable'",
+        "HALLUCINATION / ERROR LEAK DETECTED: Internal leak or placeholder '[placeholder]' found in output."
+      ]
+    },
+    {
+      "test_id": "T20",
+      "category": "demande administrative",
+      "input": "Comment obtenir la carte nationale biométrique ?",
+      "expected_intent": "demande_document",
+      "detected_intent": "demande_document",
+      "agent_response": "Bonjour. Pour obtenir votre carte nationale cnie biométrique, veuillez faire une demande en ligne sur le portail officiel.",
+      "conformity_score": 100.0,
+      "intent_matched": true,
+      "success": true,
+      "details": [
+        "SUCCESS: Intent matched 'demande_document'",
+        "SUCCESS: Found required word 'cnie'",
+        "SUCCESS: Found required word 'biométrique'",
+        "SUCCESS: Found required word 'carte'",
+        "SUCCESS: Response does not contain forbidden word 'impôts'"
+      ]
+    }
+  ]
+}
