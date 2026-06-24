@@ -97,7 +97,7 @@ def create_agent_card_pdf(output_path):
     # We will put the header in a beautiful dark slate colored table
     header_data = [
         [
-            Paragraph("AGENT CARD / FICHE D'IDENTITÉ DE L'AGENT", subtitle_style),
+            Paragraph("AGENT CARD / FICHE D'IDENTITÉ DE L'AGENT &nbsp; | &nbsp; Auteurs : Khaoula Adeli &amp; Khalil Hassani Khalfaoui", subtitle_style),
             ""
         ],
         [

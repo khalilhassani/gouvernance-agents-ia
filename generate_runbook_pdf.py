@@ -116,7 +116,7 @@ def create_runbook_pdf(output_path):
     # --- HEADER BANNER ---
     header_data = [
         [
-            Paragraph("RUNBOOK OPÉRATIONNEL DE PRODUCTION", subtitle_style),
+            Paragraph("RUNBOOK OPÉRATIONNEL DE PRODUCTION &nbsp; | &nbsp; Auteurs : Khaoula Adeli &amp; Khalil Hassani Khalfaoui", subtitle_style),
             ""
         ],
         [

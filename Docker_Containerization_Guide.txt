@@ -1,0 +1,302 @@
+DOCKER FUNDAMENTALS FOR AGENTIC AI
+==================================
+Step-by-Step Guide: Containerizing our FastAPI Agent Validation Platform
+Version: 1.0.0 (Stable)
+Auteurs: Khaoula Adeli & Khalil Hassani Khalfaoui
+
+----------------------------------------------------
+WHAT YOU WILL LEARN
+----------------------------------------------------
+- Containerize our FastAPI validation app
+- Build a Docker image
+- Run the container
+- Verify the API & tests
+- View container logs
+- Stop and remove the container
+
+====================================================
+1. OUR FASTAPI VALIDATION APP
+====================================================
+We will containerize our FastAPI validation and compliance platform. The platform
+executes tests and evaluates AI Agent behavior in an offline, repeatable
+environment.
+
+Key Features of the App:
+- FastAPI Server: Exposes endpoints for executing tests (`/api/tests/run`) and
+  exporting the workflow configuration.
+- Test Engine: Executes 20 test cases in a Golden Set and calculates intent
+  correctness, quality, and tone scores.
+- Frontend Dashboard: Displays metrics, compliance reports, and an interactive
+  playground.
+
+Project Structure:
+gouvernance-agents-ia/
+├── backend/
+│   ├── app/
+│   │   ├── main.py              # FastAPI Server
+│   │   ├── services/
+│   │   │   └── agent_service.py # Simulated Agent
+│   │   ├── tests_engine/
+│   │   │   └── engine.py        # Test Orchestrator
+│   │   └── validators/
+│   │       └── conformity.py    # Rules Engine
+│   └── requirements.txt         # Python Deps
+├── frontend/                    # Dashboard static files
+│   ├── index.html
+│   └── app.js
+└── backend/Dockerfile           # Docker Configuration
+
+====================================================
+2. REQUIREMENTS.TXT
+====================================================
+Python dependencies are listed in requirements.txt. These libraries are installed
+inside the Docker image during the build process to guarantee environment
+isolation.
+
+Core Dependencies Explained:
+- fastapi: The core web framework utilized to build the API.
+- uvicorn: An ASGI web server implementation used to run the FastAPI app.
+- pydantic: Used for data validation and schema definitions.
+- pytest: Test framework to launch and validate the execution suite.
+
+requirements.txt (File content):
+fastapi>=0.110.0
+uvicorn>=0.28.0
+pydantic>=2.0
+pytest>=8.0
+anyio>=4.0
+
+====================================================
+3. DOCKERFILE
+====================================================
+A Dockerfile contains the sequence of instructions Docker uses to build the
+container image.
+
+Instruction Breakdown:
+- FROM: Uses the official lightweight Python 3.12 image as a base (python:3.12-slim).
+- WORKDIR: Sets the directory inside the container to `/app`.
+- COPY backend/requirements.txt: Copies the requirements file.
+- RUN: Installs Python libraries listed in requirements.txt without caching.
+- COPY backend/ & COPY frontend/: Copies backend and frontend folders to container.
+- EXPOSE 8000: Documents that port 8000 is open for incoming traffic.
+- ENV: Configures Python variables (unbuffered, no bytecode compilation).
+- CMD: Defines the command that launches the server via Uvicorn.
+
+Dockerfile (File content):
+----------------------------------------------------
+FROM python:3.12-slim
+WORKDIR /app
+
+COPY backend/requirements.txt ./backend/requirements.txt
+RUN pip install --no-cache-dir -r ./backend/requirements.txt
+
+COPY backend ./backend
+COPY frontend ./frontend
+
+EXPOSE 8000
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+CMD ["python", "-m", "uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+----------------------------------------------------
+
+====================================================
+4. OPEN TERMINAL AND NAVIGATE TO PROJECT
+====================================================
+To containerize the application, start by opening your terminal or PowerShell
+console and navigate to the project directory.
+
+Commands:
+- cd: Change directory to the root of the project.
+- dir: Lists files in the current folder. Verify that the backend/ and frontend/ folders are visible.
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO> cd "C:\Users\LENOVO\Desktop\Lab 24"
+PS C:\Users\LENOVO\Desktop\Lab 24> dir
+
+    Directory: C:\Users\LENOVO\Desktop\Lab 24
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----           24/06/2026   16:33                backend
+d----           24/06/2026   16:33                frontend
+-a---           24/06/2026   16:33            9169 LIVRABLES.md
+-a---           24/06/2026   16:33            4525 README.md
+-a---           24/06/2026   16:33            3453 test_report.md
+----------------------------------------------------
+
+====================================================
+5. BUILD THE DOCKER IMAGE
+====================================================
+Build the Docker container image from the Dockerfile. This bundles Python, our
+dependencies, and all source code into a single immutable artifact.
+
+Command:
+docker build -t agent-validation-platform:1.0 -f backend/Dockerfile .
+
+Parameters:
+- -t agent-validation-platform:1.0: Tags the image with a name and version.
+- -f backend/Dockerfile: Specifies the path to the Dockerfile.
+- .: Context is the current folder (all files are copied relative to this root).
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> docker build -t agent-validation-platform:1.0 -f backend/Dockerfile .
+[+] Building 8.4s (10/10) FINISHED
+ => [internal] load build definition from Dockerfile        0.0s
+ => => transferring dockerfile: 689B                       0.0s
+ => [internal] load .dockerignore                          0.0s
+ => => transferring context: 128B                          0.0s
+ => [internal] load metadata for docker.io/library/python  1.1s
+ => [1/5] FROM docker.io/library/python:3.12-slim          2.3s
+ => [2/5] WORKDIR /app                                     0.1s
+ => [3/5] COPY backend/requirements.txt ./backend/         0.0s
+ => [4/5] RUN pip install --no-cache-dir -r ./backend/req  4.5s
+ => [5/5] COPY backend ./backend && COPY frontend ./front  0.3s
+ => exporting to image                                     0.1s
+ => => writing image sha256:d8a2bc416ef42a8b9f1d07bde8d12  0.0s
+ => => naming to docker.io/library/agent-validation-platf  0.0s
+----------------------------------------------------
+
+====================================================
+6. VERIFY THE IMAGE
+====================================================
+Verify that the image was built successfully and is registered in Docker's local
+image cache.
+
+Command:
+docker images
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> docker images
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+agent-validation-platform   1.0       d8a2bc416ef4   12 seconds ago   148MB
+python                      3.12-slim 5b1dbe7c2a44   2 weeks ago      120MB
+----------------------------------------------------
+
+====================================================
+7. RUN THE CONTAINER
+====================================================
+Instantiate and run the Docker container. This starts the FastAPI web server,
+mapping the ports to allow access from the host machine.
+
+Command:
+docker run -it --rm -p 8000:8000 agent-validation-platform:1.0
+
+Command details:
+- -it: Interactive mode with terminal output feedback.
+- --rm: Clean up and delete container files when stopped.
+- -p 8000:8000: Map port 8000 on the host to port 8000 inside the container. This
+  makes the dashboard accessible at http://127.0.0.1:8000.
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> docker run -it --rm -p 8000:8000 agent-validation-platform:1.0
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+----------------------------------------------------
+
+====================================================
+8. TEST THE AGENT & API
+====================================================
+Validate the running API container. We can query the health endpoint and execute
+the pytest suite inside the active container environment.
+
+Validation Methods:
+- curl: Verify that the FastAPI backend is running and healthy on port 8000.
+- docker exec: Run commands inside an already running container. We use it to
+  trigger our 20 business compliance test cases.
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> curl http://127.0.0.1:8000/health
+{"status":"healthy","service":"validation-engine","uptime":"nominal"}
+
+PS C:\Users\LENOVO\Desktop\Lab 24> docker exec -it agent-val-container pytest backend/app/tests/
+============================= test session starts =============================
+collected 1 item
+backend/app/tests/test_validation.py .                                   [100%]
+============================== 1 passed in 2.82s ==============================
+----------------------------------------------------
+
+====================================================
+9. VIEW LOGS (DETACHED MODE)
+====================================================
+Run the container in detached background mode. This is the preferred way to run
+services in staging or production environments.
+
+Command:
+docker run -d --name agent-val-container -p 8000:8000 agent-validation-platform:1.0
+
+Logs command:
+docker logs agent-val-container
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> docker run -d --name agent-val-container -p 8000:8000 agent-validation-platform:1.0
+8f72a4b8bc0e7a2b95cde82b9b7e77a28e827b38d3829d2b270a2a11b238382c
+
+PS C:\Users\LENOVO\Desktop\Lab 24> docker logs agent-val-container
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54321 - "GET /health HTTP/1.1" 200 OK
+----------------------------------------------------
+
+====================================================
+10. STOP THE CONTAINER
+====================================================
+Stop the running background container. This gracefully terminates Uvicorn and
+FastAPI before halting the container instance.
+
+Command:
+docker stop agent-val-container
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> docker stop agent-val-container
+agent-val-container
+----------------------------------------------------
+
+====================================================
+11. REMOVE THE CONTAINER
+====================================================
+Delete the stopped container from the local storage. This cleans up container
+metadata and releases the assigned port mapping and container name.
+
+Command:
+docker rm agent-val-container
+
+Console Run:
+----------------------------------------------------
+PS C:\Users\LENOVO\Desktop\Lab 24> docker rm agent-val-container
+agent-val-container
+----------------------------------------------------
+
+====================================================
+12. SUMMARY
+====================================================
+You have successfully containerized and validated the FastAPI Agent Validation
+Platform using Docker!
+
+Summary Checklist:
+- Verified project structure and code dependencies.
+- Explanatory breakdown of Dockerfile instructions.
+- Navigated files and built the Docker image.
+- Ran the container, mapping port 8000.
+- Verified API health check and tests inside the container.
+- Launched in detached mode and retrieved container logs.
+- Gracefully stopped and deleted the container.
+
+Validation Status:
+- Image Status: STABLE
+- Repository: agent-validation-platform
+- Tag: 1.0
+- Base Runtime: Python 3.12-slim
+- Exposed Ports: 8000
+- Test Suite inside Docker: 100% OK

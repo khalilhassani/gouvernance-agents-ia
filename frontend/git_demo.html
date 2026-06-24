@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démonstration interactive des Commandes Git</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --terminal-bg: #161b22;
+            --border-color: #30363d;
+            --text-color: #c9d1d9;
+            --command-color: #58a6ff;
+            --success-color: #56d364;
+            --accent-color: #ff7b72;
+            --muted-color: #8b949e;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism background glow */
+        .glow-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            background: linear-gradient(135deg, #58a6ff, #56d364);
+            width: 600px;
+            height: 600px;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            top: -10%;
+            right: 10%;
+        }
+
+        .orb-2 {
+            bottom: -10%;
+            left: 10%;
+            background: linear-gradient(135deg, #ab7df6, #ff7b72);
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            background: linear-gradient(90deg, #58a6ff, #56d364);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--muted-color);
+            margin: 0.5rem 0 0;
+            font-size: 1.1rem;
+        }
+
+        .terminal-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .terminal-header {
+            background-color: #21262d;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 20px;
+        }
+
+        .t-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .t-btn-red { background-color: #ff5f56; }
+        .t-btn-yellow { background-color: #ffbd2e; }
+        .t-btn-green { background-color: #27c93f; }
+
+        .terminal-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: var(--muted-color);
+            flex-grow: 1;
+            text-align: center;
+            margin-right: 50px;
+        }
+
+        .terminal-body {
+            padding: 25px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            min-height: 480px;
+            max-height: 600px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .prompt {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .path {
+            color: #8f72ff;
+        }
+
+        .cmd {
+            color: var(--command-color);
+            font-weight: 500;
+        }
+
+        .output {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+            opacity: 0.95;
+            padding-left: 15px;
+            border-left: 2px solid #30363d;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: var(--text-color);
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .line {
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: #30363d;
+            border-color: #8b949e;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1f6feb, #58a6ff);
+            border: none;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <header>
+        <h1>Versionnement Git de la Plateforme</h1>
+        <p>Simulation vidéo de l'intégration et de la publication des commits (Tag v1.0.0)</p>
+    </header>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="t-btn t-btn-red"></div>
+                <div class="t-btn t-btn-yellow"></div>
+                <div class="t-btn t-btn-green"></div>
+            </div>
+            <div class="terminal-title">devops@e-gov-server:~/Desktop/Lab-24</div>
+        </div>
+        <div class="terminal-body" id="terminal-content">
+            <!-- Content will be typed dynamically -->
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="btn-replay">🔄 Rejouer l'animation</button>
+        <button class="btn btn-primary" onclick="window.location.href='/'">📊 Retour au Dashboard</button>
+    </div>
+
+    <script>
+        const commands = [
+            {
+                cmd: "git init",
+                output: "Initialized empty Git repository in C:/Users/LENOVO/Desktop/Lab 24/.git/\n"
+            },
+            {
+                cmd: 'git config --global user.name "Ingénieur DevOps"',
+                output: ""
+            },
+            {
+                cmd: 'git config --global user.email "devops@e-gov.ma"',
+                output: ""
+            },
+            {
+                cmd: "git add .github/workflows/ci.yml",
+                output: ""
+            },
+            {
+                cmd: "git add backend/app/main.py backend/app/services/agent_service.py backend/app/validators/conformity.py backend/app/routes/agent.py backend/app/routes/tests.py backend/app/routes/workflow.py",
+                output: ""
+            },
+            {
+                cmd: "git add backend/app/tests_engine/engine.py workflows/workflow_export.json",
+                output: ""
+            },
+            {
+                cmd: "git add backend/requirements.txt README.md mocks_documentation.md test_report.md",
+                output: ""
+            },
+            {
+                cmd: 'git commit -m "feat: initial release of e-gov citizen assistant agent v1.0.0 with automated validation suite and CI pipeline"',
+                output: `[main (root-commit) eeb90c9] feat: initial release of e-gov citizen assistant agent v1.0.0 with automated validation suite and CI pipeline
+ 14 files changed, 847 insertions(+)
+ create mode 100644 .github/workflows/ci.yml
+ create mode 100644 backend/app/main.py
+ create mode 100644 backend/app/services/agent_service.py
+ create mode 100644 backend/app/validators/conformity.py
+ create mode 100644 backend/app/routes/agent.py
+ create mode 100644 backend/app/routes/tests.py
+ create mode 100644 backend/app/routes/workflow.py
+ create mode 100644 backend/app/tests_engine/engine.py
+ create mode 100644 workflows/workflow_export.json
+ create mode 100644 backend/requirements.txt
+ create mode 100644 README.md
+ create mode 100644 mocks_documentation.md
+ create mode 100644 test_report.md\n`
+            },
+            {
+                cmd: 'git tag -a v1.0.0 -m "Release v1.0.0 : Version initiale certifiée par la suite de tests de conformité (score 91.25%)"',
+                output: ""
+            },
+            {
+                cmd: "git status",
+                output: `On branch main
+nothing to commit, working tree clean\n`
+            },
+            {
+                cmd: "git log --oneline --graph --all",
+                output: `* 5d35135 docs: add complete 13.9MB lab dashboard demo video recording
+* c864c36 docs: add premium PDF Operational Runbook and generator script
+* 51839f4 docs: add premium PDF Agent Card and generator script
+* a6d7ef1 docs: add lab deliverables and update validation report
+* eeb90c9 Initial commit: Plateforme de validation de gouvernance et conformite pour les agents IA\n`
+            }
+        ];
+
+        const terminal = document.getElementById("terminal-content");
+        let commandIndex = 0;
+
+        function typeCommand(cmdObj, callback) {
+            const line = document.createElement("div");
+            line.className = "line";
+            line.innerHTML = `<span class="prompt">devops@e-gov-server</span>:<span class="path">~/Desktop/Lab-24</span>$ <span class="cmd"></span><span class="cursor"></span>`;
+            terminal.appendChild(line);
+            
+            const cmdTextElement = line.querySelector(".cmd");
+            const cursor = line.querySelector(".cursor");
+            
+            let charIndex = 0;
+            const text = cmdObj.cmd;
+            
+            // Scroll to bottom
+            terminal.scrollTop = terminal.scrollHeight;
+
+            function typeChar() {
+                if (charIndex < text.length) {
+                    cmdTextElement.textContent += text.charAt(charIndex);
+                    charIndex++;
+                    // Speed up typing for long lines
+                    const typingSpeed = text.length > 50 ? 10 : 35;
+                    setTimeout(typeChar, typingSpeed);
+                } else {
+                    cursor.remove();
+                    
+                    if (cmdObj.output) {
+                        const outDiv = document.createElement("div");
+                        outDiv.className = "output";
+                        terminal.appendChild(outDiv);
+                        
+                        let outIndex = 0;
+                        const outText = cmdObj.output;
+                        
+                        function typeOutput() {
+                            if (outIndex < outText.length) {
+                                // Write chunks of characters for fast rendering of terminal outputs
+                                const chunkSize = Math.min(20, outText.length - outIndex);
+                                outDiv.textContent += outText.substring(outIndex, outIndex + chunkSize);
+                                outIndex += chunkSize;
+                                setTimeout(typeOutput, 5);
+                            } else {
+                                terminal.scrollTop = terminal.scrollHeight;
+                                setTimeout(callback, 700);
+                            }
+                        }
+                        setTimeout(typeOutput, 150);
+                    } else {
+                        setTimeout(callback, 400);
+                    }
+                }
+            }
+            
+            setTimeout(typeChar, 200);
+        }
+
+        function runDemo() {
+            terminal.innerHTML = "";
+            commandIndex = 0;
+            
+            function next() {
+                if (commandIndex < commands.length) {
+                    typeCommand(commands[commandIndex], () => {
+                        commandIndex++;
+                        next();
+                    });
+                } else {
+                    // Done running
+                    const completionLine = document.createElement("div");
+                    completionLine.className = "line";
+                    completionLine.style.color = "var(--success-color)";
+                    completionLine.style.fontWeight = "bold";
+                    completionLine.style.marginTop = "20px";
+                    completionLine.textContent = "✔ Versionnement Git v1.0.0 complété avec succès !";
+                    terminal.appendChild(completionLine);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+            }
+            
+            next();
+        }
+
+        document.getElementById("btn-replay").addEventListener("click", runDemo);
+
+        // Start automatically
+        window.addEventListener("load", () => {
+            setTimeout(runDemo, 500);
+        });
+    </script>
+</body>
+</html>
